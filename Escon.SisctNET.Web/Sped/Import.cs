@@ -491,7 +491,7 @@ namespace Escon.SisctNET.Web.Sped
             var notes = NFeC100C170C190(directorySped);
 
             decimal p = 0;
-            string line, tipo = "", orig = "";
+            string line;
 
             try
             {
@@ -503,263 +503,240 @@ namespace Escon.SisctNET.Web.Sped
 
                         if (linha[1].Equals("0200"))
                         {
-                            string tipoTemp = "", emisao = "";
+                            string tipo = "", emisao = "";
 
                             foreach (var note in notes)
                             {
                                 if (note[1].Equals("C100"))
                                 {
-                                    tipoTemp = note[2];
+                                    tipo = note[2];
                                     emisao = note[3];
                                 }
 
-                                if (note[1].Equals("C100") && tipoTemp == "0" && emisao == "1")
+                                if (note[1].Equals("C100") && tipo == "0" && emisao == "1")
                                 {
                                     DateTime dataNota = Convert.ToDateTime(note[10].Substring(0, 2) + "/" + note[10].Substring(2, 2) + "/" + note[10].Substring(4, 4));
                                     ncmsTaxation = _taxationNcmService.FindAllInDate(taxationNcms, dataNota);
                                 }
 
-                                if (note[1].Equals("C170") && tipoTemp == "0" && emisao == "1" && note[3].Equals(linha[2]))
+                                if (note[1].Equals("C170") && tipo == "0" && emisao == "1")
                                 {
-                                    if (cfopsDevo.Contains(note[11]) && !note[7].Equals(""))
+                                    if (note[3].Equals(linha[2]))
                                     {
-                                        p += Convert.ToDecimal(note[7]);
-
-                                        Model.TaxationNcm ehNormal = null;
-                                        Model.TaxationNcm ehMono = null;
-                                        Model.TaxationNcm ehST = null;
-                                        Model.TaxationNcm ehAliqZero = null;
-                                        Model.TaxationNcm ehIsento = null;
-                                        Model.TaxationNcm ehOutras = null;
-
-                                        if (company.Taxation == "Produto")
+                                        if (cfopsDevo.Contains(note[11]) && !note[7].Equals(""))
                                         {
-                                            var prod = linha[2];
+                                            p += Convert.ToDecimal(note[7]);
 
-                                            foreach (var n in ncmsTaxation)
+                                            Model.TaxationNcm ehNormal = null;
+                                            Model.TaxationNcm ehMono = null;
+                                            Model.TaxationNcm ehST = null;
+                                            Model.TaxationNcm ehAliqZero = null;
+                                            Model.TaxationNcm ehIsento = null;
+                                            Model.TaxationNcm ehOutras = null;
+
+                                            if (company.Taxation == "Produto")
                                             {
-                                                int qtd = n.CodeProduct.Length;
+                                                var prod = linha[2];
 
-                                                string code = prod.Substring(prod.Length - qtd);
+                                                foreach (var n in ncmsTaxation)
+                                                {
+                                                    int qtd = n.CodeProduct.Length;
 
-                                                ehNormal = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Normal")).FirstOrDefault();
-                                                ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Monofásico")).FirstOrDefault();
-                                                ehAliqZero = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Aliquota Zero")).FirstOrDefault();
-                                                ehST = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("S. Tributária")).FirstOrDefault();
-                                                ehIsento = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Isento")).FirstOrDefault();
-                                                ehOutras = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Outras")).FirstOrDefault();
+                                                    string code = prod.Substring(prod.Length - qtd);
 
-                                                if (ehNormal != null || ehMono != null || ehST != null || ehAliqZero != null || ehIsento != null || ehOutras != null)
-                                                    break;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            ehNormal = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Normal")).FirstOrDefault();
-                                            ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Monofásico")).FirstOrDefault();
-                                            ehAliqZero = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Aliquota Zero")).FirstOrDefault();
-                                            ehST = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("S. Tributária")).FirstOrDefault();
-                                            ehIsento = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Isento")).FirstOrDefault();
-                                            ehOutras = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Outras")).FirstOrDefault();
-                                        }
+                                                    ehNormal = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Normal")).FirstOrDefault();
+                                                    ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Monofásico")).FirstOrDefault();
+                                                    ehAliqZero = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Aliquota Zero")).FirstOrDefault();
+                                                    ehST = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("S. Tributária")).FirstOrDefault();
+                                                    ehIsento = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Isento")).FirstOrDefault();
+                                                    ehOutras = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Outras")).FirstOrDefault();
 
-                                        if (ehNormal != null)
-                                        {
-                                            if (note[11].Substring(0, 1) == "2")
-                                            {
-                                                // Devolução Normal
-                                                devoNormalNormal += Convert.ToDecimal(note[7]);
+                                                    if (ehNormal != null || ehMono != null || ehST != null || ehAliqZero != null || ehIsento != null || ehOutras != null)
+                                                        break;
+                                                }
                                             }
                                             else
                                             {
-                                                if (note[10] == "101" || linha[8] == "102" || linha[8] == "300")
-                                                {
-                                                    // Devolução ST
-                                                    devoNormalNormal += Convert.ToDecimal(note[7]);
-                                                }
-                                                else if (note[10] == "500")
+                                                ehNormal = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Normal")).FirstOrDefault();
+                                                ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Monofásico")).FirstOrDefault();
+                                                ehAliqZero = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Aliquota Zero")).FirstOrDefault();
+                                                ehST = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("S. Tributária")).FirstOrDefault();
+                                                ehIsento = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Isento")).FirstOrDefault();
+                                                ehOutras = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Outras")).FirstOrDefault();
+                                            }
+
+                                            if (ehNormal != null)
+                                            {
+                                                if (note[11].Substring(0, 1) == "2")
                                                 {
                                                     // Devolução Normal
-                                                    devoSTNormal += Convert.ToDecimal(note[7]);
-                                                }
-                                                else
-                                                {
-                                                    // Devolução ST
                                                     devoNormalNormal += Convert.ToDecimal(note[7]);
                                                 }
-                                            }
-
-                                        }
-                                        else if (ehMono != null)
-                                        {
-                                            if (note[11].Substring(0, 1) == "2")
-                                            {
-                                                // Devolução Normal
-                                                devoNormalMono += Convert.ToDecimal(note[7]);
-                                            }
-                                            else
-                                            {
-                                                if (note[10] == "500")
+                                                else
                                                 {
-                                                    // Devolução ST Monofásica
-                                                    devoSTMono += Convert.ToDecimal(note[7]);
+                                                    if (note[10] == "101" || linha[8] == "102" || linha[8] == "300")
+                                                    {
+                                                        // Devolução ST
+                                                        devoNormalNormal += Convert.ToDecimal(note[7]);
+                                                    }
+                                                    else if (note[10] == "500")
+                                                    {
+                                                        // Devolução Normal
+                                                        devoSTNormal += Convert.ToDecimal(note[7]);
+                                                    }
+                                                    else
+                                                    {
+                                                        // Devolução ST
+                                                        devoNormalNormal += Convert.ToDecimal(note[7]);
+                                                    }
                                                 }
-                                                else if (note[10] == "101" || linha[8] == "102" || linha[8] == "300")
+
+                                            }
+                                            
+                                            if (ehMono != null)
+                                            {
+                                                if (note[11].Substring(0, 1) == "2")
                                                 {
-                                                    // Devolução Normal Monofásica
+                                                    // Devolução Normal
                                                     devoNormalMono += Convert.ToDecimal(note[7]);
                                                 }
                                                 else
                                                 {
-                                                    // Devolução Normal Monofásica
-                                                    devoNormalMono += Convert.ToDecimal(note[7]);
+                                                    if (note[10] == "500")
+                                                    {
+                                                        // Devolução ST Monofásica
+                                                        devoSTMono += Convert.ToDecimal(note[7]);
+                                                    }
+                                                    else if (note[10] == "101" || linha[8] == "102" || linha[8] == "300")
+                                                    {
+                                                        // Devolução Normal Monofásica
+                                                        devoNormalMono += Convert.ToDecimal(note[7]);
+                                                    }
+                                                    else
+                                                    {
+                                                        // Devolução Normal Monofásica
+                                                        devoNormalMono += Convert.ToDecimal(note[7]);
+                                                    }
                                                 }
-                                            }
 
-                                        }
-                                        else if (ehST != null)
-                                        {
-                                            if (note[11].Substring(0, 1) == "6")
-                                            {
-                                                // Devolução Normal ST
-                                                devoNormalST += Convert.ToDecimal(note[7]);
                                             }
-                                            else
+                                            
+                                            if (ehST != null)
                                             {
-                                                if (note[10] == "500")
-                                                {
-                                                    // Devolução ST ST
-                                                    devoSTST += Convert.ToDecimal(note[7]);
-                                                }
-                                                else if (note[10] == "101" || linha[8] == "102" || linha[8] == "300")
+                                                if (note[11].Substring(0, 1) == "6")
                                                 {
                                                     // Devolução Normal ST
                                                     devoNormalST += Convert.ToDecimal(note[7]);
                                                 }
                                                 else
                                                 {
-                                                    // Devolução Normal ST
-                                                    devoNormalST += Convert.ToDecimal(note[7]);
+                                                    if (note[10] == "500")
+                                                    {
+                                                        // Devolução ST ST
+                                                        devoSTST += Convert.ToDecimal(note[7]);
+                                                    }
+                                                    else if (note[10] == "101" || linha[8] == "102" || linha[8] == "300")
+                                                    {
+                                                        // Devolução Normal ST
+                                                        devoNormalST += Convert.ToDecimal(note[7]);
+                                                    }
+                                                    else
+                                                    {
+                                                        // Devolução Normal ST
+                                                        devoNormalST += Convert.ToDecimal(note[7]);
+                                                    }
                                                 }
-                                            }
 
-                                        }
-                                        else if (ehAliqZero != null)
-                                        {
-                                            if (note[11].Substring(0, 1) == "2")
-                                            {
-                                                // Devolução Normal Aliq. Zero
-                                                devoNormalAliqZero += Convert.ToDecimal(note[7]);
                                             }
-                                            else
+                                            
+                                            if (ehAliqZero != null)
                                             {
-                                                if (note[10] == "500")
-                                                {
-                                                    // Devolução ST Aliq. Zero
-                                                    devoSTAliqZero += Convert.ToDecimal(note[7]);
-                                                }
-                                                else if (note[10] == "101" || linha[8] == "102" || linha[8] == "300")
+                                                if (note[11].Substring(0, 1) == "2")
                                                 {
                                                     // Devolução Normal Aliq. Zero
                                                     devoNormalAliqZero += Convert.ToDecimal(note[7]);
                                                 }
                                                 else
                                                 {
-                                                    // Devolução Normal Aliq. Zero
-                                                    devoNormalAliqZero += Convert.ToDecimal(note[7]);
+                                                    if (note[10] == "500")
+                                                    {
+                                                        // Devolução ST Aliq. Zero
+                                                        devoSTAliqZero += Convert.ToDecimal(note[7]);
+                                                    }
+                                                    else if (note[10] == "101" || linha[8] == "102" || linha[8] == "300")
+                                                    {
+                                                        // Devolução Normal Aliq. Zero
+                                                        devoNormalAliqZero += Convert.ToDecimal(note[7]);
+                                                    }
+                                                    else
+                                                    {
+                                                        // Devolução Normal Aliq. Zero
+                                                        devoNormalAliqZero += Convert.ToDecimal(note[7]);
+                                                    }
                                                 }
-                                            }
 
-                                        }
-                                        else if (ehIsento != null)
-                                        {
-                                            if (note[11].Substring(0, 1) == "2")
-                                            {
-                                                // Devolução Normal Isento
-                                                devoNormalIsento += Convert.ToDecimal(note[7]);
                                             }
-                                            else
+                                            
+                                            if (ehIsento != null)
                                             {
-                                                if (note[10] == "500")
-                                                {
-                                                    // Devolução ST Isento
-                                                    devoSTIsento += Convert.ToDecimal(note[7]);
-                                                }
-                                                else if (note[10] == "101" || linha[8] == "102" || linha[8] == "300")
+                                                if (note[11].Substring(0, 1) == "2")
                                                 {
                                                     // Devolução Normal Isento
                                                     devoNormalIsento += Convert.ToDecimal(note[7]);
                                                 }
                                                 else
                                                 {
-                                                    // Devolução Normal Isento
-                                                    devoNormalIsento += Convert.ToDecimal(note[7]);
+                                                    if (note[10] == "500")
+                                                    {
+                                                        // Devolução ST Isento
+                                                        devoSTIsento += Convert.ToDecimal(note[7]);
+                                                    }
+                                                    else if (note[10] == "101" || linha[8] == "102" || linha[8] == "300")
+                                                    {
+                                                        // Devolução Normal Isento
+                                                        devoNormalIsento += Convert.ToDecimal(note[7]);
+                                                    }
+                                                    else
+                                                    {
+                                                        // Devolução Normal Isento
+                                                        devoNormalIsento += Convert.ToDecimal(note[7]);
+                                                    }
                                                 }
-                                            }
 
-                                        }
-                                        else if (ehOutras != null)
-                                        {
-                                            if (note[11].Substring(0, 1) == "2")
-                                            {
-                                                // Devolução Normal Outras
-                                                devoNormalOutras += Convert.ToDecimal(note[7]);
                                             }
-                                            else
+                                            
+                                            if (ehOutras != null)
                                             {
-                                                if (note[10] == "500")
-                                                {
-                                                    // Devolução ST Outras
-                                                    devoSTOutras += Convert.ToDecimal(note[7]);
-                                                }
-                                                else if (note[10] == "101" || linha[8] == "102" || linha[8] == "300")
+                                                if (note[11].Substring(0, 1) == "2")
                                                 {
                                                     // Devolução Normal Outras
                                                     devoNormalOutras += Convert.ToDecimal(note[7]);
                                                 }
                                                 else
                                                 {
-                                                    // Devolução Normal Outras
-                                                    devoNormalOutras += Convert.ToDecimal(note[7]);
+                                                    if (note[10] == "500")
+                                                    {
+                                                        // Devolução ST Outras
+                                                        devoSTOutras += Convert.ToDecimal(note[7]);
+                                                    }
+                                                    else if (note[10] == "101" || linha[8] == "102" || linha[8] == "300")
+                                                    {
+                                                        // Devolução Normal Outras
+                                                        devoNormalOutras += Convert.ToDecimal(note[7]);
+                                                    }
+                                                    else
+                                                    {
+                                                        // Devolução Normal Outras
+                                                        devoNormalOutras += Convert.ToDecimal(note[7]);
+                                                    }
                                                 }
-                                            }
 
-                                        }
-                                        else
-                                        {
-                                            if (note[11].Substring(0, 1) == "2")
-                                            {
-                                                // Devolução Normal
-                                                devoNormalNormal += Convert.ToDecimal(note[7]);
                                             }
-                                            else
-                                            {
-                                                if (note[10] == "101" || linha[8] == "102" || linha[8] == "300")
-                                                {
-                                                    // Devolução ST
-                                                    devoNormalNormal += Convert.ToDecimal(note[7]);
-                                                }
-                                                else if (note[10] == "500")
-                                                {
-                                                    // Devolução Normal
-                                                    devoSTNormal += Convert.ToDecimal(note[7]);
-                                                }
-                                                else
-                                                {
-                                                    // Devolução ST
-                                                    devoNormalNormal += Convert.ToDecimal(note[7]);
-                                                }
-                                            }
+                                          
                                         }
                                     }
                                 }
                             }
-                        }
-
-                        if (linha[1].Equals("C100"))
-                        {
-                            tipo = linha[2];
-                            orig = linha[3];
                         }
 
                         if (linha[1].Equals("E001") || linha[1].Equals("H001"))
@@ -2968,14 +2945,17 @@ namespace Escon.SisctNET.Web.Sped
                     if (!line.Equals(""))
                     {
                         string[] linha = line.Split('|');
-                        if (linha[1] == "C100" && (linha[2] == "1" || (linha[2] == "0" && linha[3] == "0")) && linha[6] != "05" && linha[6] != "03" && linha[6] != "02")
+                        if (linha[1] == "C100")
                         {
-                            List<string> sped = new List<string>();
-                            sped.Add(linha[9]);
-                            sped.Add(linha[5]);
-                            sped.Add(linha[8]);
-                            sped.Add(linha[12]);
-                            spedNf.Add(sped);
+                            if((linha[2] == "1" || (linha[2] == "0" && linha[3] == "0")) && linha[6] != "05" && linha[6] != "03" && linha[6] != "02")
+                            {
+                                List<string> sped = new List<string>();
+                                sped.Add(linha[9]);
+                                sped.Add(linha[5]);
+                                sped.Add(linha[8]);
+                                sped.Add(linha[12]);
+                                spedNf.Add(sped);
+                            }
                         }
                     }
                 }
@@ -2989,6 +2969,7 @@ namespace Escon.SisctNET.Web.Sped
             {
                 archiveSped.Close();
             }
+
             return spedNf;
         }
 
